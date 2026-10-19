@@ -63,6 +63,11 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
             icone = R.drawable.ic_escudo_ok;
             cor = R.color.safe_green;
             fundo = R.color.safe_green_container;
+        } else if (evento.getTipo() == Evento.Tipo.CHECKIN_SEM_RESPOSTA) {
+            // Check-in sem resposta virou alerta: escudo em vermelho
+            icone = R.drawable.ic_escudo;
+            cor = R.color.vermelho_texto;
+            fundo = R.color.sos_red_translucido;
         } else {
             icone = R.drawable.ic_emergencia;
             cor = R.color.vermelho_texto;

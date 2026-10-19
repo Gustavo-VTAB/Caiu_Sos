@@ -7,7 +7,10 @@ public class Evento {
     public enum Tipo {
         QUEDA,
         PANICO,
-        CHECKIN
+        // A pessoa respondeu "Estou bem" ao check-in de segurança
+        CHECKIN,
+        // Ninguém respondeu ao check-in e o alerta foi aberto
+        CHECKIN_SEM_RESPOSTA
     }
 
     private Tipo tipo;

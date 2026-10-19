@@ -210,6 +210,9 @@ public class Util {
         if (evento.getTipo() == Evento.Tipo.CHECKIN) {
             return R.string.evento_checkin;
         }
+        if (evento.getTipo() == Evento.Tipo.CHECKIN_SEM_RESPOSTA) {
+            return R.string.evento_checkin_sem_resposta;
+        }
         return R.string.evento_queda;
     }
 }

@@ -159,6 +159,33 @@ public class UtilTest {
     }
 
     @Test
+    public void semAcentos_mensagemDeCheckinCabeEmUmSms() {
+        // A mensagem mais longa: check-in sem resposta, com nome longo
+        String mensagem = "Caiu SOS: Maria Aparecida dos Santos Oliveira não respondeu ao check-in de segurança. "
+                + "Localização: " + Util.linkDoMapa(-21.2947443, -50.3504413);
+        assertTrue(Util.semAcentos(mensagem).length() <= 160);
+    }
+
+    // ---- Título dos eventos do histórico ----
+
+    @Test
+    public void tituloDoEvento_checkins() {
+        assertEquals(R.string.evento_checkin,
+                Util.tituloDoEvento(new Evento(Evento.Tipo.CHECKIN, false, 0, "", 0, 0)));
+        assertEquals(R.string.evento_checkin_sem_resposta,
+                Util.tituloDoEvento(new Evento(Evento.Tipo.CHECKIN_SEM_RESPOSTA, false, 0, "", 0, 0)));
+    }
+
+    @Test
+    public void tituloDoEvento_canceladoVemPrimeiro() {
+        // Qualquer alerta que a pessoa cancelou aparece como "Alerta cancelado"
+        assertEquals(R.string.evento_cancelado,
+                Util.tituloDoEvento(new Evento(Evento.Tipo.CHECKIN_SEM_RESPOSTA, true, 0, "", 0, 0)));
+        assertEquals(R.string.evento_cancelado,
+                Util.tituloDoEvento(new Evento(Evento.Tipo.QUEDA, true, 0, "", 0, 0)));
+    }
+
+    @Test
     public void semAcentos_mensagemDeQuedaCabeEmUmSms() {
         // Sem acento, um SMS leva até 160 letras: a mensagem real (nome longo) tem que caber em 1
         String mensagem = "Caiu SOS: Maria Aparecida dos Santos Oliveira pode ter sofrido uma queda. "

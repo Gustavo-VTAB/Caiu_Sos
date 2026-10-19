@@ -130,12 +130,14 @@ public class HistoricoActivity extends AppCompatActivity {
 
     // Guarda só os eventos dos últimos 30 dias do tipo escolhido, do mais novo para o mais antigo.
     // Uma queda cancelada continua sendo uma queda, então aparece no filtro "Quedas".
+    // O filtro "Check-ins" mostra também os check-ins sem resposta.
     private List<Evento> filtrarEventos(List<Evento> todos, Evento.Tipo tipo, long agora) {
         long limite = agora - DIAS_NO_HISTORICO * UM_DIA_MS;
         List<Evento> resultado = new ArrayList<>();
         for (Evento evento : todos) {
             boolean recente = evento.getQuando() >= limite;
-            boolean doTipo = tipo == null || evento.getTipo() == tipo;
+            boolean doTipo = tipo == null || evento.getTipo() == tipo
+                    || (tipo == Evento.Tipo.CHECKIN && evento.getTipo() == Evento.Tipo.CHECKIN_SEM_RESPOSTA);
             if (recente && doTipo) {
                 resultado.add(evento);
             }

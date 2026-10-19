@@ -58,6 +58,7 @@
     <string name="alerta_titulo_queda">Queda detectada!</string>
     <string name="alerta_titulo_panico">Pedido de ajuda</string>
     <string name="alerta_titulo_teste">Teste de alerta</string>
+    <string name="alerta_titulo_checkin">Check-in sem resposta</string>
     <string name="alerta_enviando_em">Enviando alerta de emergência em:</string>
     <string name="alerta_simulando_em">Simulando envio do alerta em:</string>
     <string name="alerta_segundos">SEGUNDOS</string>
@@ -94,6 +95,7 @@
     <!-- Mensagem de SMS/WhatsApp para os contatos -->
     <string name="mensagem_queda">Caiu SOS: %1$s pode ter sofrido uma queda. Localização: %2$s</string>
     <string name="mensagem_panico">Caiu SOS: %1$s pediu ajuda. Localização: %2$s</string>
+    <string name="mensagem_checkin">Caiu SOS: %1$s não respondeu ao check-in de segurança. Localização: %2$s</string>
     <string name="mensagem_nome_padrao">Um contato seu</string>
     <string name="mensagem_sem_localizacao">não disponível</string>
     <string name="mensagem_localizacao_atrasada">Caiu SOS: localização de %1$s: %2$s</string>
@@ -108,8 +110,13 @@
     <!-- Notificações do MonitorService -->
     <string name="canal_monitoramento">Monitoramento</string>
     <string name="canal_queda">Alerta de queda</string>
+    <string name="canal_checkin">Check-in de segurança</string>
     <string name="notificacao_parar">Parar</string>
-    <string name="notificacao_modo_demonstracao">Modo demonstração: limiares pela metade</string>
+    <string name="notificacao_modo_demonstracao">Modo demonstração: limiares pela metade e check-in a cada 1 min</string>
+    <string name="checkin_pergunta">Está tudo bem?</string>
+    <string name="checkin_texto">Toque em Estou bem. Sem resposta em %1$s, o alerta de emergência abre.</string>
+    <string name="checkin_estou_bem">Estou bem</string>
+    <string name="checkin_registrado">Check-in registrado</string>
     <string name="notificacao_queda_texto">Toque para abrir. O alerta será enviado se você não cancelar.</string>
     <string name="alerta_teste_concluido">Teste concluído</string>
     <string name="alerta_teste_concluido_descricao">Nada foi enviado — era só um teste</string>
@@ -173,6 +180,7 @@
     <string name="evento_cancelado">Alerta cancelado</string>
     <string name="evento_panico">Botão de pânico</string>
     <string name="evento_checkin">Check-in OK</string>
+    <string name="evento_checkin_sem_resposta">Check-in sem resposta</string>
     <string name="evento_situacao_enviado">Alerta enviado aos seus contatos</string>
     <string name="evento_situacao_cancelado">Você cancelou antes do envio</string>
     <string name="evento_situacao_checkin">Você confirmou que estava bem</string>

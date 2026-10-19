@@ -7,6 +7,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
@@ -14,6 +15,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
@@ -21,9 +23,11 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.ServiceCompat;
 import androidx.core.content.ContextCompat;
 
@@ -35,6 +39,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 // Serviço em primeiro plano (com a notificação fixa "Monitoramento ativo") que lê os sensores
 // mesmo com a tela apagada. Ele não decide nada sozinho: repassa as leituras ao DetectorDeQueda
@@ -42,8 +49,9 @@ import java.util.List;
 // A cada 30 s também manda a telemetria (localização, bateria, barômetro...) para a API.
 public class MonitorService extends Service implements SensorEventListener, DetectorDeQueda.Listener {
 
-    // Para apresentar em sala: true divide os limiares de impacto e de rotação por 2,
-    // então jogar o celular no sofá já conta como queda. No uso de verdade, deixe false.
+    // Para apresentar em sala: true divide os limiares de impacto e de rotação por 2, então jogar
+    // o celular no sofá já conta como queda, e o check-in pergunta a cada 1 minuto (espera 30 s).
+    // No uso de verdade, deixe false.
     public static final boolean DEBUG_LIMIARES = true;
 
     // Etiqueta das mensagens no Logcat (filtre por "CaiuSOS")
@@ -62,6 +70,15 @@ public class MonitorService extends Service implements SensorEventListener, Dete
     private static final long INTERVALO_TELEMETRIA_MS = 30000;
     // De quanto em quanto tempo o GPS manda uma posição nova
     private static final long INTERVALO_LOCALIZACAO_MS = 10000;
+
+    // Check-in de segurança: o intervalo vem das Configurações; depois de perguntar, espera a
+    // resposta por 2 minutos antes de abrir o alerta. No modo demonstração: 1 min e 30 s.
+    private static final String ACAO_CHECKIN_OK = "com.mindup.caiu_sos.CHECKIN_OK";
+    private static final String CANAL_CHECKIN = "checkin";
+    private static final int ID_NOTIFICACAO_CHECKIN = 3;
+    private static final long TEMPO_RESPOSTA_CHECKIN_MS = 2 * 60 * 1000;
+    private static final long INTERVALO_CHECKIN_DEMONSTRACAO_MS = 60 * 1000;
+    private static final long TEMPO_RESPOSTA_CHECKIN_DEMONSTRACAO_MS = 30 * 1000;
 
     // Últimas leituras do barômetro (hPa) e do termômetro (°C). null = o aparelho não tem o
     // sensor ou o serviço está parado. Estáticas para a tela de alerta mandar junto para a API.
@@ -87,6 +104,26 @@ public class MonitorService extends Service implements SensorEventListener, Dete
     private boolean localizacaoLigada = false;
     // true quando o serviço está em primeiro plano só com o tipo "health" (sensores, sem GPS)
     private boolean emPrimeiroPlanoSoComSensores = false;
+    // Intervalo do check-in agendado agora (0 = check-in desligado)
+    private long intervaloCheckinAgendado = 0;
+    // true enquanto a pergunta "Está tudo bem?" espera a resposta
+    private boolean esperandoCheckin = false;
+
+    // Chegou a hora do check-in: pergunta se está tudo bem
+    private final Runnable perguntarCheckin = new Runnable() {
+        @Override
+        public void run() {
+            perguntarSeEstaTudoBem();
+        }
+    };
+
+    // Passou o tempo de resposta e ninguém tocou em "Estou bem"
+    private final Runnable checkinSemResposta = new Runnable() {
+        @Override
+        public void run() {
+            avisarCheckinSemResposta();
+        }
+    };
 
     // Recebe as posições novas do GPS e guarda a última
     private final LocationCallback receberLocalizacao = new LocationCallback() {
@@ -146,6 +183,12 @@ public class MonitorService extends Service implements SensorEventListener, Dete
             return START_STICKY;
         }
 
+        // Botão "Estou bem" da notificação do check-in
+        if (ACAO_CHECKIN_OK.equals(acao) && iniciado) {
+            confirmarCheckin();
+            return START_STICKY;
+        }
+
         // Vira serviço em primeiro plano, com a notificação fixa (sem isso o Android mata o
         // serviço em poucos minutos com a tela apagada)
         boolean comLocalizacao = virarPrimeiroPlano();
@@ -169,6 +212,8 @@ public class MonitorService extends Service implements SensorEventListener, Dete
         if (comLocalizacao && !localizacaoLigada) {
             ligarLocalizacao();
         }
+        // O check-in pode ter sido ligado, desligado ou mudado de intervalo nas Configurações
+        agendarCheckin();
         Log.i(TAG, "Monitoramento ativo. Sensibilidade " + Prefs.getSensibilidade(this)
                 + ", limiar de impacto " + detector.getLimiarImpacto() + " m/s²"
                 + ", limiar de rotação " + detector.getLimiarRotacao() + " rad/s"
@@ -216,6 +261,7 @@ public class MonitorService extends Service implements SensorEventListener, Dete
         sensorManager.unregisterListener(this);
         localizacaoCliente.removeLocationUpdates(receberLocalizacao);
         handler.removeCallbacks(telemetria);
+        pararCheckin();
         if (wakeLock != null && wakeLock.isHeld()) {
             wakeLock.release();
         }
@@ -366,22 +412,173 @@ public class MonitorService extends Service implements SensorEventListener, Dete
 
         // Registra no histórico agora; a tela de alerta completa depois com o endereço e o resultado
         long quando = System.currentTimeMillis();
-        List<Evento> eventos = Prefs.carregarEventos(this);
-        eventos.add(new Evento(Evento.Tipo.QUEDA, false, quando, getString(R.string.evento_sem_localizacao), 0, 0));
-        Prefs.salvarEventos(this, eventos);
+        adicionarEvento(new Evento(Evento.Tipo.QUEDA, false, quando, getString(R.string.evento_sem_localizacao), 0, 0));
+        abrirAlerta(AlertaActivity.MODO_QUEDA, pico, quando, R.string.alerta_titulo_queda);
+    }
 
+    // Abre a tela de alerta (contagem para cancelar) por cima de tudo, até da tela de bloqueio
+    private void abrirAlerta(String modo, float impacto, long quando, int titulo) {
         Intent intent = new Intent(this, AlertaActivity.class);
-        intent.putExtra(AlertaActivity.EXTRA_MODO, AlertaActivity.MODO_QUEDA);
-        intent.putExtra(AlertaActivity.EXTRA_IMPACTO, pico);
+        intent.putExtra(AlertaActivity.EXTRA_MODO, modo);
+        intent.putExtra(AlertaActivity.EXTRA_IMPACTO, impacto);
         intent.putExtra(AlertaActivity.EXTRA_QUANDO, quando);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         // Android 10+ não deixa um serviço abrir uma tela quando o app está em segundo plano.
         // A notificação com fullScreenIntent resolve: com a tela apagada ou bloqueada, ela abre
         // o alerta direto; com o celular em uso, aparece no topo da tela.
-        mostrarNotificacaoDeQueda(intent);
+        mostrarNotificacaoDeAlerta(intent, titulo);
         // Com o app aberto na tela o Android deixa abrir direto (senão ele só ignora este pedido)
         startActivity(intent);
+    }
+
+    // Acrescenta um evento ao histórico
+    private void adicionarEvento(Evento evento) {
+        List<Evento> eventos = Prefs.carregarEventos(this);
+        eventos.add(evento);
+        Prefs.salvarEventos(this, eventos);
+    }
+
+    // ---- Check-in de segurança ----
+
+    // Liga, desliga ou muda o intervalo do check-in conforme as Configurações. Só mexe se algo
+    // mudou: abrir a Home também chama o onStartCommand e não pode zerar a contagem.
+    private void agendarCheckin() {
+        long intervalo = 0;
+        if (Prefs.isCheckinAtivo(this)) {
+            intervalo = DEBUG_LIMIARES ? INTERVALO_CHECKIN_DEMONSTRACAO_MS
+                    : Prefs.getIntervaloCheckin(this) * 60 * 1000L;
+        }
+        if (intervalo == intervaloCheckinAgendado) {
+            return;
+        }
+        pararCheckin();
+        intervaloCheckinAgendado = intervalo;
+        if (intervalo > 0) {
+            handler.postDelayed(perguntarCheckin, intervalo);
+            Log.i(TAG, "Check-in ligado: pergunta a cada " + intervalo / 1000 + " s");
+        } else {
+            Log.i(TAG, "Check-in desligado");
+        }
+    }
+
+    // Desliga o check-in: tira os agendamentos e a pergunta que estiver na tela
+    private void pararCheckin() {
+        handler.removeCallbacks(perguntarCheckin);
+        handler.removeCallbacks(checkinSemResposta);
+        esperandoCheckin = false;
+        intervaloCheckinAgendado = 0;
+        NotificationManagerCompat.from(this).cancel(ID_NOTIFICACAO_CHECKIN);
+    }
+
+    // Tempo que a pergunta espera a resposta antes de abrir o alerta
+    private long tempoRespostaCheckin() {
+        return DEBUG_LIMIARES ? TEMPO_RESPOSTA_CHECKIN_DEMONSTRACAO_MS : TEMPO_RESPOSTA_CHECKIN_MS;
+    }
+
+    // Chegou a hora: mostra a notificação "Está tudo bem?" e começa a esperar a resposta
+    @SuppressLint("MissingPermission") // podeMostrarCheckin() confere a permissão de notificação
+    private void perguntarSeEstaTudoBem() {
+        // Já tem um alerta contando, ou a notificação não apareceria (sem ela a pessoa não teria
+        // como responder e o alerta abriria sem motivo): pula esta vez
+        if (AlertaActivity.contagemAtiva || !podeMostrarCheckin()) {
+            Log.w(TAG, "Check-in pulado: alerta aberto ou notificações bloqueadas");
+            handler.postDelayed(perguntarCheckin, intervaloCheckinAgendado);
+            return;
+        }
+        esperandoCheckin = true;
+        NotificationManagerCompat.from(this).notify(ID_NOTIFICACAO_CHECKIN, criarNotificacaoCheckin());
+        handler.postDelayed(checkinSemResposta, tempoRespostaCheckin());
+        Log.i(TAG, "Check-in: perguntando se está tudo bem");
+    }
+
+    // A pessoa tocou em "Estou bem": registra no histórico e agenda a próxima pergunta
+    private void confirmarCheckin() {
+        if (!esperandoCheckin) {
+            return;
+        }
+        esperandoCheckin = false;
+        handler.removeCallbacks(checkinSemResposta);
+        NotificationManagerCompat.from(this).cancel(ID_NOTIFICACAO_CHECKIN);
+        Log.i(TAG, "Check-in confirmado: está tudo bem");
+        Toast.makeText(this, R.string.checkin_registrado, Toast.LENGTH_SHORT).show();
+        registrarCheckin();
+        handler.postDelayed(perguntarCheckin, intervaloCheckinAgendado);
+    }
+
+    // Ninguém respondeu: abre a tela de alerta, com a contagem para cancelar, igual a uma queda
+    private void avisarCheckinSemResposta() {
+        esperandoCheckin = false;
+        NotificationManagerCompat.from(this).cancel(ID_NOTIFICACAO_CHECKIN);
+        handler.postDelayed(perguntarCheckin, intervaloCheckinAgendado);
+        if (AlertaActivity.contagemAtiva) {
+            return;
+        }
+        Log.w(TAG, "Check-in sem resposta: abrindo o alerta");
+        long quando = System.currentTimeMillis();
+        adicionarEvento(new Evento(Evento.Tipo.CHECKIN_SEM_RESPOSTA, false, quando,
+                getString(R.string.evento_sem_localizacao), 0, 0));
+        abrirAlerta(AlertaActivity.MODO_CHECKIN, 0f, quando, R.string.alerta_titulo_checkin);
+    }
+
+    // Grava "Check-in OK" no histórico com a última posição do GPS e, se achar, o endereço
+    private void registrarCheckin() {
+        long quando = System.currentTimeMillis();
+        Location local = ultimaLocalizacao;
+        if (local == null) {
+            adicionarEvento(new Evento(Evento.Tipo.CHECKIN, false, quando,
+                    getString(R.string.evento_sem_localizacao), 0, 0));
+            return;
+        }
+        // O Geocoder consulta a internet: roda em segundo plano e volta para a thread principal
+        Context app = getApplicationContext();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            String endereco = Geocoder.isPresent() ? AlertaActivity.buscarEndereco(app, local) : null;
+            if (endereco == null) {
+                endereco = String.format(Locale.US, "%.5f, %.5f", local.getLatitude(), local.getLongitude());
+            }
+            String texto = endereco;
+            handler.post(() -> adicionarEvento(new Evento(Evento.Tipo.CHECKIN, false, quando, texto,
+                    local.getLatitude(), local.getLongitude())));
+        });
+        executor.shutdown();
+    }
+
+    // Diz se a notificação do check-in vai aparecer (permissão dada e canal não bloqueado)
+    private boolean podeMostrarCheckin() {
+        if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+            return false;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel canal = getSystemService(NotificationManager.class).getNotificationChannel(CANAL_CHECKIN);
+            return canal != null && canal.getImportance() != NotificationManager.IMPORTANCE_NONE;
+        }
+        return true;
+    }
+
+    // Notificação "Está tudo bem?" com o botão "Estou bem" (tocar na notificação também confirma)
+    private Notification criarNotificacaoCheckin() {
+        Intent ok = new Intent(this, MonitorService.class).setAction(ACAO_CHECKIN_OK);
+        PendingIntent estouBem = PendingIntent.getService(this, 2, ok, PendingIntent.FLAG_IMMUTABLE);
+        // "2 min" ou, no modo demonstração, "30 s"
+        long segundos = tempoRespostaCheckin() / 1000;
+        String prazo = segundos < 60
+                ? getString(R.string.config_segundos_curto, (int) segundos)
+                : getString(R.string.config_minutos_curto, (int) (segundos / 60));
+        return new NotificationCompat.Builder(this, CANAL_CHECKIN)
+                .setSmallIcon(R.drawable.ic_escudo_ok)
+                .setContentTitle(getString(R.string.checkin_pergunta))
+                .setContentText(getString(R.string.checkin_texto, prazo))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.checkin_texto, prazo)))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                // Aparece inteira na tela de bloqueio, para responder sem desbloquear
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setOngoing(true)
+                .setContentIntent(estouBem)
+                .addAction(R.drawable.ic_check_circulo, getString(R.string.checkin_estou_bem), estouBem)
+                .build();
     }
 
     // ---- Notificações ----
@@ -398,6 +595,9 @@ public class MonitorService extends Service implements SensorEventListener, Dete
         // Queda: importância alta, com som, pode abrir em tela cheia
         gerenciador.createNotificationChannel(new NotificationChannel(CANAL_QUEDA,
                 getString(R.string.canal_queda), NotificationManager.IMPORTANCE_HIGH));
+        // Check-in: importância alta, aparece no topo da tela com som
+        gerenciador.createNotificationChannel(new NotificationChannel(CANAL_CHECKIN,
+                getString(R.string.canal_checkin), NotificationManager.IMPORTANCE_HIGH));
     }
 
     // Notificação fixa "Monitoramento ativo" com o botão "Parar"
@@ -426,8 +626,8 @@ public class MonitorService extends Service implements SensorEventListener, Dete
                 .build();
     }
 
-    // Notificação urgente da queda, que abre a tela de alerta em tela cheia
-    private void mostrarNotificacaoDeQueda(Intent abrirAlerta) {
+    // Notificação urgente (queda ou check-in sem resposta), que abre a tela de alerta em tela cheia
+    private void mostrarNotificacaoDeAlerta(Intent abrirAlerta, int titulo) {
         // Sem permissão de notificação (Android 13+) o Android descartaria a notificação
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
                 && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
@@ -439,7 +639,7 @@ public class MonitorService extends Service implements SensorEventListener, Dete
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Notification notificacao = new NotificationCompat.Builder(this, CANAL_QUEDA)
                 .setSmallIcon(R.drawable.ic_emergencia)
-                .setContentTitle(getString(R.string.alerta_titulo_queda))
+                .setContentTitle(getString(titulo))
                 .setContentText(getString(R.string.notificacao_queda_texto))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)

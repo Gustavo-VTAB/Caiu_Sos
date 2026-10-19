@@ -65,7 +65,8 @@ import java.util.concurrent.Executors;
 // Implementa OnTouchListener para acompanhar o dedo no botão "ESTOU BEM".
 public class AlertaActivity extends AppCompatActivity implements View.OnTouchListener {
 
-    // Extra do Intent que diz por que a tela abriu: queda, pedido de ajuda (pânico) ou teste
+    // Extra do Intent que diz por que a tela abriu: queda, pedido de ajuda (pânico),
+    // check-in sem resposta ou teste
     public static final String EXTRA_MODO = "com.mindup.caiu_sos.MODO";
     // Pico do impacto em m/s² (só na queda) e a hora da queda (para achar o evento que o
     // MonitorService já registrou no histórico)
@@ -73,6 +74,7 @@ public class AlertaActivity extends AppCompatActivity implements View.OnTouchLis
     public static final String EXTRA_QUANDO = "com.mindup.caiu_sos.QUANDO";
     public static final String MODO_QUEDA = "queda";
     public static final String MODO_PANICO = "panico";
+    public static final String MODO_CHECKIN = "checkin";
     public static final String MODO_TESTE = "teste";
 
     // true só enquanto a contagem está correndo (o MonitorService não abre outra por cima).
@@ -383,6 +385,9 @@ public class AlertaActivity extends AppCompatActivity implements View.OnTouchLis
                 break;
             case MODO_TESTE:
                 titulo = R.string.alerta_titulo_teste;
+                break;
+            case MODO_CHECKIN:
+                titulo = R.string.alerta_titulo_checkin;
                 break;
             default:
                 titulo = R.string.alerta_titulo_queda;
@@ -714,7 +719,12 @@ public class AlertaActivity extends AppCompatActivity implements View.OnTouchLis
         if (localizacao != null) {
             onde = Util.linkDoMapa(localizacao.getLatitude(), localizacao.getLongitude());
         }
-        int texto = MODO_PANICO.equals(modo) ? R.string.mensagem_panico : R.string.mensagem_queda;
+        int texto = R.string.mensagem_queda;
+        if (MODO_PANICO.equals(modo)) {
+            texto = R.string.mensagem_panico;
+        } else if (MODO_CHECKIN.equals(modo)) {
+            texto = R.string.mensagem_checkin;
+        }
         return getString(texto, nomeNaMensagem(), onde);
     }
 
@@ -944,9 +954,10 @@ public class AlertaActivity extends AppCompatActivity implements View.OnTouchLis
         executor.shutdown();
     }
 
-    // Transforma latitude/longitude em "Rua XV de Novembro, 1200 – Centro" (null se não achar)
+    // Transforma latitude/longitude em "Rua XV de Novembro, 1200 – Centro" (null se não achar).
+    // Também usado pelo MonitorService no check-in. Faz consulta na internet: nunca na thread da tela.
     @SuppressWarnings("deprecation") // a versão com callback do Geocoder só existe no Android 13+
-    private static String buscarEndereco(Context context, Location local) {
+    static String buscarEndereco(Context context, Location local) {
         try {
             Geocoder geocoder = new Geocoder(context, Locale.forLanguageTag("pt-BR"));
             List<Address> enderecos = geocoder.getFromLocation(local.getLatitude(), local.getLongitude(), 1);
@@ -985,7 +996,12 @@ public class AlertaActivity extends AppCompatActivity implements View.OnTouchLis
             }
         }
         if (evento == null) {
-            Evento.Tipo tipo = MODO_PANICO.equals(modo) ? Evento.Tipo.PANICO : Evento.Tipo.QUEDA;
+            Evento.Tipo tipo = Evento.Tipo.QUEDA;
+            if (MODO_PANICO.equals(modo)) {
+                tipo = Evento.Tipo.PANICO;
+            } else if (MODO_CHECKIN.equals(modo)) {
+                tipo = Evento.Tipo.CHECKIN_SEM_RESPOSTA;
+            }
             evento = new Evento(tipo, cancelado, quando, enderecoEvento, 0, 0);
             eventos.add(evento);
         }
