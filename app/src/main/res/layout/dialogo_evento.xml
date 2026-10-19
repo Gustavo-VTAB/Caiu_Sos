@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Corpo do diálogo de detalhes do evento: quando, onde e o que aconteceu -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="24dp">
+
+    <TextView
+        android:id="@+id/quando"
+        style="@style/Texto.Corpo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        app:drawableStartCompat="@drawable/ic_calendario"
+        app:drawableTint="?attr/colorOnSurfaceVariant"
+        tools:text="Sábado, 18 de outubro de 2025 às 08:30" />
+
+    <TextView
+        android:id="@+id/endereco"
+        style="@style/Texto.Corpo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        app:drawableStartCompat="@drawable/ic_localizacao"
+        app:drawableTint="?attr/colorOnSurfaceVariant"
+        tools:text="Rua XV de Novembro, 1200 – Centro" />
+
+    <TextView
+        android:id="@+id/situacao"
+        style="@style/Texto.Corpo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        app:drawableStartCompat="@drawable/ic_info"
+        app:drawableTint="?attr/colorOnSurfaceVariant"
+        tools:text="@string/evento_situacao_enviado" />
+</LinearLayout>

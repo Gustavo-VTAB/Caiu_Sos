@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ContatosActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationContentDescription="@string/voltar"
+        app:navigationIcon="@drawable/ic_voltar"
+        app:title="@string/contatos_titulo" />
+
+    <TextView
+        android:id="@+id/textoDescricao"
+        style="@style/Texto.Secundario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margem_tela"
+        android:layout_marginEnd="@dimen/margem_tela"
+        android:text="@string/contatos_descricao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <!-- paddingBottom deixa o último card rolar para cima do FAB -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lista"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/margem_tela"
+        android:paddingEnd="@dimen/margem_tela"
+        android:paddingBottom="88dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/botaoSamu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textoDescricao"
+        tools:listitem="@layout/item_contato" />
+
+    <!-- Estado vazio, centralizado na área da lista -->
+    <ImageView
+        android:id="@+id/iconeVazio"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:background="@drawable/bg_circulo"
+        android:backgroundTint="@color/neutral_container"
+        android:importantForAccessibility="no"
+        android:padding="24dp"
+        android:src="@drawable/ic_contatos"
+        app:layout_constraintBottom_toTopOf="@id/textoVazio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/lista"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:tint="?attr/colorOnSurfaceVariant" />
+
+    <TextView
+        android:id="@+id/textoVazio"
+        style="@style/Texto.Titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/contatos_nenhum"
+        app:layout_constraintBottom_toTopOf="@id/botaoAdicionarVazio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iconeVazio" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/botaoAdicionarVazio"
+        style="@style/Widget.CaiuSOS.BotaoGrande"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:text="@string/contatos_adicionar_contato"
+        app:icon="@drawable/ic_adicionar"
+        app:layout_constraintBottom_toBottomOf="@id/lista"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textoVazio" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/grupoVazio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="iconeVazio,textoVazio,botaoAdicionarVazio" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdicionar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margem_tela"
+        android:layout_marginBottom="@dimen/margem_tela"
+        android:contentDescription="@string/contatos_adicionar_contato"
+        android:src="@drawable/ic_adicionar"
+        app:layout_constraintBottom_toTopOf="@id/botaoSamu"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/botaoSamu"
+        style="@style/Widget.CaiuSOS.BotaoContornoVermelho"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margem_tela"
+        android:layout_marginEnd="@dimen/margem_tela"
+        android:layout_marginBottom="12dp"
+        android:text="@string/contatos_ligar_samu"
+        app:icon="@drawable/ic_telefone"
+        app:iconGravity="textStart"
+        app:layout_constraintBottom_toTopOf="@id/navegacao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navegacao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_navegacao" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

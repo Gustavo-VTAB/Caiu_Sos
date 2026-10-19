@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Telefone sem chip (tablet) também instala: só não manda SMS -->
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- API do professor e clima -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Localização no alerta e na telemetria -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- SMS para os contatos -->
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <!-- MonitorService: serviço em primeiro plano (localização + sensores), com a CPU acordada.
+         O tipo "health" deixa o serviço voltar só com os sensores quando o Android não permite
+         "location" (serviço recriado com o app fechado ou depois de reiniciar o celular). -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH" />
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Religar o monitoramento quando o celular liga -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Notificações (Android 13+) e alerta em tela cheia por cima da tela de bloqueio -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CaiuSOS">
+        <!-- Sem singleTop: uma queda nova abre um alerta novo mesmo com a tela de resultado do
+             alerta anterior aberta. configChanges: o tema claro/escuro não recria a tela no meio
+             da contagem. -->
+        <activity
+            android:name=".AlertaActivity"
+            android:configChanges="uiMode|orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.CaiuSOS.Alerta" />
+        <activity
+            android:name=".ConfiguracoesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HistoricoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ContatosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".MonitorService"
+            android:exported="false"
+            android:foregroundServiceType="location|health" />
+
+        <!-- Religa o monitoramento quando o celular liga e quando o app é atualizado -->
+        <receiver
+            android:name=".InicioReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Lista agrupada no estilo das configurações do Android: cabeçalho de seção + card com as opções.
+     Tudo é salvo na hora (sem botão "Salvar"). -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ConfiguracoesActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationContentDescription="@string/voltar"
+        app:navigationIcon="@drawable/ic_voltar"
+        app:title="@string/configuracoes" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/rolagem"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/margem_tela"
+            android:paddingEnd="@dimen/margem_tela"
+            android:paddingBottom="24dp">
+
+            <!-- ===== Seu nome: vai na mensagem de alerta e no campo "usuario" da API ===== -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/campoNomeUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/config_nome"
+                app:helperText="@string/config_nome_descricao"
+                app:hintEnabled="true"
+                app:startIconDrawable="@drawable/ic_pessoa">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputNomeUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPersonName|textCapWords"
+                    android:minHeight="@dimen/alvo_toque"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- ===== Detecção ===== -->
+            <TextView
+                android:id="@+id/secaoDeteccao"
+                style="@style/Texto.Secao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/config_secao_deteccao"
+                app:drawableStartCompat="@drawable/ic_ajustes" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Sensibilidade: 3 passos -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_card">
+
+                        <TextView
+                            android:id="@+id/tituloSensibilidade"
+                            style="@style/Texto.Titulo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/config_sensibilidade"
+                            app:layout_constraintEnd_toStartOf="@id/valorSensibilidade"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/valorSensibilidade"
+                            style="@style/Texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_pilula"
+                            android:backgroundTint="?attr/colorSecondaryContainer"
+                            android:fontFamily="sans-serif-medium"
+                            android:paddingStart="12dp"
+                            android:paddingTop="4dp"
+                            android:paddingEnd="12dp"
+                            android:paddingBottom="4dp"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@id/tituloSensibilidade"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tituloSensibilidade"
+                            tools:text="@string/config_sensibilidade_media" />
+
+                        <TextView
+                            android:id="@+id/descricaoSensibilidade"
+                            style="@style/Texto.Secundario"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/config_sensibilidade_descricao"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tituloSensibilidade" />
+
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/sliderSensibilidade"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:contentDescription="@string/config_sensibilidade"
+                            android:stepSize="1"
+                            android:valueFrom="0"
+                            android:valueTo="2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/descricaoSensibilidade" />
+
+                        <TextView
+                            android:id="@+id/rotuloBaixa"
+                            style="@style/Texto.Legenda"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:importantForAccessibility="no"
+                            android:text="@string/config_sensibilidade_baixa"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/sliderSensibilidade" />
+
+                        <TextView
+                            style="@style/Texto.Legenda"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:importantForAccessibility="no"
+                            android:text="@string/config_sensibilidade_media"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/rotuloBaixa" />
+
+                        <TextView
+                            style="@style/Texto.Legenda"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:importantForAccessibility="no"
+                            android:text="@string/config_sensibilidade_alta"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/rotuloBaixa" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/padding_card"
+                        android:layout_marginEnd="@dimen/padding_card" />
+
+                    <!-- Tempo para cancelar: 10 a 60 s -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_card">
+
+                        <TextView
+                            android:id="@+id/tituloTempo"
+                            style="@style/Texto.Titulo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/config_tempo"
+                            app:layout_constraintEnd_toStartOf="@id/valorTempo"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/valorTempo"
+                            style="@style/Texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/vermelho_texto"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBaseline_toBaselineOf="@id/tituloTempo"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:text="30 segundos" />
+
+                        <TextView
+                            android:id="@+id/descricaoTempo"
+                            style="@style/Texto.Secundario"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/config_tempo_descricao"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tituloTempo" />
+
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/sliderTempo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:contentDescription="@string/config_tempo"
+                            android:stepSize="5"
+                            android:valueFrom="10"
+                            android:valueTo="60"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/descricaoTempo" />
+
+                        <TextView
+                            android:id="@+id/tempoMinimo"
+                            style="@style/Texto.Legenda"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:importantForAccessibility="no"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/sliderTempo"
+                            tools:text="10 s" />
+
+                        <TextView
+                            android:id="@+id/tempoMaximo"
+                            style="@style/Texto.Legenda"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:importantForAccessibility="no"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tempoMinimo"
+                            tools:text="60 s" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ===== Check-in de segurança ===== -->
+            <TextView
+                android:id="@+id/secaoCheckin"
+                style="@style/Texto.Secao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/config_secao_checkin"
+                app:drawableStartCompat="@drawable/ic_relogio" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchCheckin"
+                        style="@style/Widget.CaiuSOS.Switch.Linha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/config_checkin" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/padding_card"
+                        android:layout_marginEnd="@dimen/padding_card" />
+
+                    <!-- Intervalo: 15 a 120 min, só vale com o check-in ligado -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/linhaIntervalo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_card">
+
+                        <TextView
+                            android:id="@+id/tituloIntervalo"
+                            style="@style/Texto.Titulo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/config_intervalo"
+                            app:layout_constraintEnd_toStartOf="@id/valorIntervalo"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/valorIntervalo"
+                            style="@style/Texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/verde_texto"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBaseline_toBaselineOf="@id/tituloIntervalo"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:text="A cada 45 minutos" />
+
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/sliderIntervalo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:contentDescription="@string/config_intervalo"
+                            android:stepSize="15"
+                            android:theme="@style/ThemeOverlay.CaiuSOS.Verde"
+                            android:valueFrom="15"
+                            android:valueTo="120"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tituloIntervalo" />
+
+                        <TextView
+                            android:id="@+id/intervaloMinimo"
+                            style="@style/Texto.Legenda"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:importantForAccessibility="no"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/sliderIntervalo"
+                            tools:text="15 min" />
+
+                        <TextView
+                            android:id="@+id/intervaloMaximo"
+                            style="@style/Texto.Legenda"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:importantForAccessibility="no"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/intervaloMinimo"
+                            tools:text="120 min" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ===== Canais de alerta ===== -->
+            <TextView
+                android:id="@+id/secaoCanais"
+                style="@style/Texto.Secao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/config_secao_canais"
+                app:drawableStartCompat="@drawable/ic_enviar" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchSms"
+                        style="@style/Widget.CaiuSOS.Switch.Linha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/config_sms" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/padding_card"
+                        android:layout_marginEnd="@dimen/padding_card" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchWhatsapp"
+                        style="@style/Widget.CaiuSOS.Switch.Linha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/config_whatsapp" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/padding_card"
+                        android:layout_marginEnd="@dimen/padding_card" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchServidor"
+                        style="@style/Widget.CaiuSOS.Switch.Linha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/config_servidor" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ===== Aparência ===== -->
+            <TextView
+                android:id="@+id/secaoAparencia"
+                style="@style/Texto.Secao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/config_secao_aparencia"
+                app:drawableStartCompat="@drawable/ic_modo_noturno" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchNoturno"
+                    style="@style/Widget.CaiuSOS.Switch.Linha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/config_noturno" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ===== Rodapé ===== -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/botaoTestar"
+                style="@style/Widget.CaiuSOS.BotaoContornoVermelho"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/config_testar"
+                app:icon="@drawable/ic_emergencia"
+                app:iconGravity="textStart" />
+
+            <TextView
+                style="@style/Texto.Secundario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@string/config_testar_descricao" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

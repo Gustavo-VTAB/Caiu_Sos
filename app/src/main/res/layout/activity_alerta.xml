@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fundo vermelho vem do tema (Theme.CaiuSOS.Alerta). Tela fica acesa durante a contagem. -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".AlertaActivity">
+
+    <!-- 1. Ícone, título e subtítulo -->
+    <ImageView
+        android:id="@+id/iconeAlerta"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_circulo"
+        android:backgroundTint="@color/alerta_translucido"
+        android:importantForAccessibility="no"
+        android:padding="16dp"
+        android:src="@drawable/ic_emergencia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/tituloAlerta"
+        style="@style/Texto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margem_tela"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="@dimen/margem_tela"
+        android:gravity="center"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iconeAlerta"
+        tools:text="@string/alerta_titulo_queda" />
+
+    <TextView
+        android:id="@+id/subtituloAlerta"
+        style="@style/Texto.Corpo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margem_tela"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/margem_tela"
+        android:gravity="center"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tituloAlerta"
+        tools:text="@string/alerta_enviando_em" />
+
+    <!-- 2. Anel de contagem + "Enviar agora", centralizados no espaço livre -->
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressoContagem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:importantForAccessibility="no"
+        android:max="1000"
+        app:indicatorColor="@color/white"
+        app:indicatorSize="220dp"
+        app:layout_constraintBottom_toTopOf="@id/botaoEnviarAgora"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/subtituloAlerta"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:trackColor="@color/alerta_trilha"
+        app:trackThickness="12dp"
+        tools:progress="760" />
+
+    <TextView
+        android:id="@+id/textoContagem"
+        style="@style/Texto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFeatureSettings="tnum"
+        android:includeFontPadding="false"
+        android:textSize="64sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/textoSegundos"
+        app:layout_constraintEnd_toEndOf="@id/progressoContagem"
+        app:layout_constraintStart_toStartOf="@id/progressoContagem"
+        app:layout_constraintTop_toTopOf="@id/progressoContagem"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="23" />
+
+    <TextView
+        android:id="@+id/textoSegundos"
+        style="@style/Texto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:letterSpacing="0.15"
+        android:text="@string/alerta_segundos"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/progressoContagem"
+        app:layout_constraintEnd_toEndOf="@id/progressoContagem"
+        app:layout_constraintStart_toStartOf="@id/progressoContagem"
+        app:layout_constraintTop_toBottomOf="@id/textoContagem" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/grupoContagem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="textoContagem,textoSegundos" />
+
+    <!-- Aparece no lugar do número depois que o alerta é enviado -->
+    <ImageView
+        android:id="@+id/iconeEnviado"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_check"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/progressoContagem"
+        app:layout_constraintEnd_toEndOf="@id/progressoContagem"
+        app:layout_constraintStart_toStartOf="@id/progressoContagem"
+        app:layout_constraintTop_toTopOf="@id/progressoContagem"
+        app:tint="@color/white" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/botaoEnviarAgora"
+        style="@style/Widget.CaiuSOS.BotaoTexto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/alerta_enviar_agora"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_seta_direita"
+        app:iconGravity="textEnd"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/botaoEstouBem"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progressoContagem" />
+
+    <!-- 3. "ESTOU BEM": segurar 1,5 s enche de verde e cancela -->
+    <FrameLayout
+        android:id="@+id/botaoEstouBem"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="@dimen/margem_tela"
+        android:layout_marginEnd="@dimen/margem_tela"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/bg_botao_estou_bem"
+        android:clickable="true"
+        android:contentDescription="@string/alerta_estou_bem_descricao"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintBottom_toTopOf="@id/textoLocalizacao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:id="@+id/preenchimentoEstouBem"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/safe_green_claro"
+            android:scaleX="0"
+            android:transformPivotX="0dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:importantForAccessibility="noHideDescendants"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textoEstouBem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:letterSpacing="0.05"
+                android:text="@string/alerta_estou_bem"
+                android:textColor="@color/sos_red_dark"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textoSegureCancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/alerta_segure_cancelar"
+                android:textColor="@color/sos_red_dark"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- 4. Localização (mock até a etapa 3) -->
+    <TextView
+        android:id="@+id/textoLocalizacao"
+        style="@style/Texto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:drawablePadding="8dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_vertical"
+        android:text="@string/alerta_localizacao_obtida"
+        android:textSize="14sp"
+        app:drawableStartCompat="@drawable/ic_check_circulo"
+        app:drawableTint="@color/safe_green_claro"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,215 @@
+<resources>
+    <string name="app_name">Caiu SOS</string>
+
+    <!-- Navegação -->
+    <string name="nav_inicio">Início</string>
+    <string name="nav_contatos">Contatos</string>
+    <string name="nav_historico">Histórico</string>
+    <string name="configuracoes">Configurações</string>
+
+    <!-- Home: status do monitoramento -->
+    <string name="status_ativo">Monitoramento ativo</string>
+    <string name="status_ativo_descricao">Detecção de queda ligada</string>
+    <string name="status_desligado">Monitoramento desligado</string>
+    <string name="status_desligado_descricao">Detecção de queda desligada</string>
+    <string name="status_switch_descricao">Monitoramento de quedas</string>
+
+    <!-- Home: botão SOS -->
+    <string name="sos">SOS</string>
+    <string name="sos_descricao">Botão de pânico. Segure por 3 segundos para pedir ajuda</string>
+    <string name="sos_segure">Segure para pedir ajuda</string>
+    <string name="sos_dica">Mantenha pressionado por 3 segundos</string>
+    <string name="sos_segurando">Continue segurando…</string>
+    <string name="sos_solte_cancelar">Solte para cancelar</string>
+    <string name="sos_toque_curto">Segure o botão por 3 segundos para pedir ajuda</string>
+    <string name="sos_acao_acessibilidade">pedir ajuda</string>
+
+    <!-- Home: permissões do monitoramento -->
+    <string name="permissoes_titulo">Antes de ligar</string>
+    <string name="permissoes_mensagem">Para avisar seus contatos se você cair, o Caiu SOS precisa de:\n\n• Notificações: para mostrar o alerta com a tela bloqueada\n• Localização: para mandar onde você está\n• SMS: para enviar a mensagem aos contatos</string>
+    <string name="permissoes_continuar">Continuar</string>
+    <string name="permissoes_agora_nao">Agora não</string>
+    <string name="permissoes_negadas">Sem as permissões o monitoramento não funciona</string>
+    <string name="permissoes_ajustes">Ajustes</string>
+    <string name="permissoes_tela_cheia">Permita o alerta em tela cheia para ver a queda com a tela bloqueada</string>
+    <string name="permissoes_permitir">Permitir</string>
+
+    <!-- Home: clima -->
+    <string name="clima_carregando">Carregando clima…</string>
+    <string name="clima_indisponivel">Clima indisponível</string>
+    <string name="clima_temperatura">%1$d°C</string>
+    <string name="clima_cidade_descricao">%1$s · %2$s</string>
+    <string name="clima_aviso_chuva">Chuva prevista — atenção na estrada</string>
+    <string name="clima_aviso_vento">Vento forte — atenção na estrada</string>
+    <string name="clima_condicoes_boas">Condições boas para sair</string>
+
+    <!-- Home: contatos -->
+    <plurals name="contatos_quantidade">
+        <item quantity="one">%d contato de emergência</item>
+        <item quantity="other">%d contatos de emergência</item>
+    </plurals>
+    <string name="contatos_configurados">Avisos automáticos configurados</string>
+    <string name="contatos_nenhum">Nenhum contato cadastrado</string>
+    <string name="contatos_nenhum_descricao">Adicione quem deve ser avisado</string>
+    <string name="contatos_ver_lista">Ver lista</string>
+    <string name="contatos_adicionar">Adicionar</string>
+
+    <!-- Alerta -->
+    <string name="alerta_titulo_queda">Queda detectada!</string>
+    <string name="alerta_titulo_panico">Pedido de ajuda</string>
+    <string name="alerta_titulo_teste">Teste de alerta</string>
+    <string name="alerta_enviando_em">Enviando alerta de emergência em:</string>
+    <string name="alerta_simulando_em">Simulando envio do alerta em:</string>
+    <string name="alerta_segundos">SEGUNDOS</string>
+    <string name="alerta_enviar_agora"><u>Enviar alerta agora</u></string>
+    <string name="alerta_estou_bem">ESTOU BEM</string>
+    <string name="alerta_segure_cancelar">Segure para cancelar</string>
+    <string name="alerta_estou_bem_descricao">Estou bem. Segure para cancelar o alerta</string>
+    <string name="alerta_acao_cancelar">cancelar o alerta</string>
+    <string name="alerta_como_cancelar">Para cancelar, segure ESTOU BEM</string>
+    <string name="alerta_cancelado">Alerta cancelado</string>
+    <string name="alerta_localizacao_obtida">Localização obtida</string>
+    <string name="alerta_enviado">Alerta enviado</string>
+    <string name="alerta_enviando">Enviando alerta…</string>
+    <string name="alerta_falhou">Não foi possível enviar</string>
+    <string name="alerta_aguardando_localizacao">Aguardando a localização…</string>
+    <string name="alerta_localizacao_buscando">Obtendo localização…</string>
+    <string name="alerta_localizacao_indisponivel">Localização indisponível</string>
+    <string name="alerta_sem_contatos">Nenhum contato cadastrado</string>
+    <plurals name="alerta_sms_enviado">
+        <item quantity="one">SMS enviado para %d contato</item>
+        <item quantity="other">SMS enviado para %d contatos</item>
+    </plurals>
+    <string name="alerta_sms_sem_permissao">SMS: sem permissão</string>
+    <string name="alerta_sms_falhou">SMS: falha no envio</string>
+    <string name="alerta_whatsapp_para">Mandar no WhatsApp para %1$s</string>
+    <string name="alerta_whatsapp_resultado">WhatsApp: toque em enviar na conversa com %1$s</string>
+    <string name="alerta_whatsapp_toque_enviar">Toque em enviar para avisar %1$s</string>
+    <string name="alerta_whatsapp_titulo">Falta enviar no WhatsApp</string>
+    <string name="alerta_whatsapp_falhou">WhatsApp não instalado</string>
+    <string name="alerta_servidor_enviando">Enviando ao servidor…</string>
+    <string name="alerta_servidor_ok">Alerta enviado ao servidor</string>
+    <string name="alerta_servidor_falha">Falha: %1$s</string>
+
+    <!-- Mensagem de SMS/WhatsApp para os contatos -->
+    <string name="mensagem_queda">Caiu SOS: %1$s pode ter sofrido uma queda. Localização: %2$s</string>
+    <string name="mensagem_panico">Caiu SOS: %1$s pediu ajuda. Localização: %2$s</string>
+    <string name="mensagem_nome_padrao">Um contato seu</string>
+    <string name="mensagem_sem_localizacao">não disponível</string>
+    <string name="mensagem_localizacao_atrasada">Caiu SOS: localização de %1$s: %2$s</string>
+    <string name="alerta_localizacao_enviada">Localização enviada por SMS</string>
+
+    <!-- API (mensagens de erro curtas, aparecem depois de "Falha: ") -->
+    <string name="api_sem_internet">sem conexão com a internet</string>
+    <string name="api_tempo_esgotado">o servidor não respondeu em 5 s</string>
+    <string name="api_resposta_invalida">resposta inválida do servidor</string>
+    <string name="api_erro_http">erro HTTP %1$d</string>
+
+    <!-- Notificações do MonitorService -->
+    <string name="canal_monitoramento">Monitoramento</string>
+    <string name="canal_queda">Alerta de queda</string>
+    <string name="notificacao_parar">Parar</string>
+    <string name="notificacao_modo_demonstracao">Modo demonstração: limiares pela metade</string>
+    <string name="notificacao_queda_texto">Toque para abrir. O alerta será enviado se você não cancelar.</string>
+    <string name="alerta_teste_concluido">Teste concluído</string>
+    <string name="alerta_teste_concluido_descricao">Nada foi enviado — era só um teste</string>
+    <string name="alerta_fechar">FECHAR</string>
+
+    <!-- Contatos -->
+    <string name="voltar">Voltar</string>
+    <string name="contatos_titulo">Contatos de emergência</string>
+    <string name="contatos_descricao">Todos recebem SMS com sua localização em caso de queda. Segure um contato para escolher quem recebe também no WhatsApp (★).</string>
+    <string name="contatos_telefone_whatsapp">%1$s · WhatsApp</string>
+    <string name="contatos_acao_favorito">Escolher para o WhatsApp</string>
+    <string name="contatos_adicionar_contato">Adicionar contato</string>
+    <string name="contatos_ligar_samu">Ligar 192 (SAMU)</string>
+    <string name="contatos_removido">Contato removido</string>
+    <string name="contatos_desfazer">Desfazer</string>
+    <string name="contatos_excluir">Excluir contato</string>
+    <string name="contatos_discador_indisponivel">Não foi possível abrir o discador</string>
+
+    <!-- Contato favorito do WhatsApp -->
+    <string name="whatsapp_como_funciona_titulo">Como funciona o WhatsApp</string>
+    <string name="whatsapp_como_funciona">Todos os contatos recebem o SMS sozinhos, sem você tocar em nada.\n\nO WhatsApp não deixa nenhum app mandar mensagem por conta própria: é a proteção dele contra spam e golpes. Por isso, na hora do alerta, o Caiu SOS abre a conversa com o contato favorito (★) com a mensagem e a localização já escritas. Você só toca em enviar.\n\nComo precisa desse toque, vai para um contato só: quem você mais quer avisar.</string>
+    <string name="favorito_titulo">Avisar %1$s pelo WhatsApp?</string>
+    <string name="favorito_ja_escolhido">%1$s recebe pelo WhatsApp</string>
+    <string name="favorito_escolher">Escolher</string>
+    <string name="favorito_entendi">Entendi</string>
+    <string name="favorito_escolhido">%1$s vai receber o alerta pelo WhatsApp</string>
+
+    <!-- Formulário de contato (bottom sheet) -->
+    <string name="contato_novo">Novo contato</string>
+    <string name="contato_editar">Editar contato</string>
+    <string name="contato_nome">Nome completo</string>
+    <string name="contato_nome_exemplo">Ex: Ana Maria Silva</string>
+    <string name="contato_telefone">Número de celular</string>
+    <string name="contato_telefone_exemplo">(00) 00000-0000</string>
+    <string name="contato_cancelar">Cancelar</string>
+    <string name="contato_salvar">Salvar</string>
+    <string name="contato_erro_nome">Informe o nome</string>
+    <string name="contato_erro_telefone">Digite o celular com DDD: (00) 00000-0000</string>
+    <string name="contato_erro_duplicado">Este número já está na lista</string>
+
+    <!-- Histórico -->
+    <string name="historico_titulo">Histórico</string>
+    <string name="historico_filtro_todos">Todos</string>
+    <string name="historico_filtro_quedas">Quedas</string>
+    <string name="historico_filtro_panico">Pânico</string>
+    <string name="historico_filtro_checkins">Check-ins</string>
+    <string name="historico_periodo">Últimos 30 dias</string>
+    <plurals name="historico_registros">
+        <item quantity="one">%d registro</item>
+        <item quantity="other">%d registros</item>
+    </plurals>
+    <string name="historico_vazio">Nenhum evento registrado</string>
+    <string name="historico_vazio_descricao">Quedas, pedidos de ajuda e check-ins aparecem aqui</string>
+    <string name="historico_hoje">Hoje, %1$s</string>
+    <string name="historico_ontem">Ontem, %1$s</string>
+    <string name="historico_data">%1$s, %2$s</string>
+    <string name="historico_data_completa">%1$s às %2$s</string>
+
+    <!-- Eventos: títulos padronizados, curtos -->
+    <string name="evento_queda">Queda detectada</string>
+    <string name="evento_cancelado">Alerta cancelado</string>
+    <string name="evento_panico">Botão de pânico</string>
+    <string name="evento_checkin">Check-in OK</string>
+    <string name="evento_situacao_enviado">Alerta enviado aos seus contatos</string>
+    <string name="evento_situacao_cancelado">Você cancelou antes do envio</string>
+    <string name="evento_situacao_checkin">Você confirmou que estava bem</string>
+    <string name="evento_ver_no_mapa">Ver no mapa</string>
+    <string name="evento_fechar">Fechar</string>
+    <string name="evento_mapa_indisponivel">Não foi possível abrir o mapa</string>
+    <string name="evento_sem_localizacao">Localização não obtida</string>
+
+    <!-- Configurações -->
+    <string name="config_nome">Seu nome</string>
+    <string name="config_nome_descricao">Vai na mensagem enviada aos seus contatos</string>
+    <string name="config_secao_deteccao">Detecção</string>
+    <string name="config_sensibilidade">Sensibilidade da detecção</string>
+    <string name="config_sensibilidade_descricao">Alta percebe quedas mais leves</string>
+    <string name="config_sensibilidade_baixa">Baixa</string>
+    <string name="config_sensibilidade_media">Média</string>
+    <string name="config_sensibilidade_alta">Alta</string>
+    <string name="config_tempo">Tempo para cancelar</string>
+    <string name="config_tempo_descricao">Contagem antes de enviar o alerta</string>
+    <string name="config_tempo_valor">%d segundos</string>
+    <string name="config_segundos_curto">%d s</string>
+    <string name="config_secao_checkin">Check-in de segurança</string>
+    <string name="config_checkin">Ativar check-in</string>
+    <string name="config_checkin_descricao">Pergunta se está tudo bem</string>
+    <string name="config_intervalo">Intervalo</string>
+    <string name="config_intervalo_valor">A cada %d minutos</string>
+    <string name="config_minutos_curto">%d min</string>
+    <string name="config_secao_canais">Canais de alerta</string>
+    <string name="config_sms">Enviar por SMS</string>
+    <string name="config_whatsapp">Enviar por WhatsApp</string>
+    <string name="config_whatsapp_para">Para %1$s: abre a conversa pronta, você só toca em enviar</string>
+    <string name="config_whatsapp_sem_contato">Cadastre um contato para usar</string>
+    <string name="config_servidor">Enviar para servidor</string>
+    <string name="config_canal_obrigatorio">Deixe pelo menos um canal ligado</string>
+    <string name="config_secao_aparencia">Aparência</string>
+    <string name="config_noturno">Modo noturno automático</string>
+    <string name="config_noturno_descricao">Usa o sensor de luz</string>
+    <string name="config_testar">Testar alerta</string>
+    <string name="config_testar_descricao">Abre a tela de alerta sem enviar nada</string>
+</resources>

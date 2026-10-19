@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fundo da tela de alerta: vermelho escuro no topo, vermelho no rodapé -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="270"
+        android:endColor="@color/sos_red"
+        android:startColor="@color/sos_red_dark" />
+</shape>

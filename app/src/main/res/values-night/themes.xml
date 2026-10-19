@@ -1,0 +1,40 @@
+<resources>
+
+    <!-- Cores do tema escuro (noite). Mesmos itens de values/themes.xml. -->
+    <style name="Base.Theme.CaiuSOS" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/sos_red</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/sos_red_container_dark</item>
+        <item name="colorOnPrimaryContainer">@color/sos_red_light</item>
+
+        <item name="colorSecondary">@color/safe_green</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondaryContainer">@color/dark_border</item>
+        <item name="colorOnSecondaryContainer">@color/dark_text</item>
+
+        <item name="colorTertiary">@color/warning_amber</item>
+        <item name="colorOnTertiary">@color/light_text</item>
+
+        <item name="colorError">@color/sos_red_light</item>
+        <item name="colorOnError">@color/white</item>
+
+        <item name="android:colorBackground">@color/dark_bg</item>
+        <item name="colorOnBackground">@color/dark_text</item>
+        <item name="colorSurface">@color/dark_surface</item>
+        <item name="colorOnSurface">@color/dark_text</item>
+        <item name="colorSurfaceVariant">@color/dark_border</item>
+        <item name="colorOnSurfaceVariant">@color/dark_text_2</item>
+        <item name="colorOutline">@color/cancel_gray</item>
+        <item name="colorOutlineVariant">@color/dark_border</item>
+
+        <item name="colorSurfaceInverse">@color/light_bg</item>
+        <item name="colorOnSurfaceInverse">@color/light_text</item>
+        <item name="colorPrimaryInverse">@color/sos_red</item>
+
+        <item name="colorSurfaceContainerLowest">@color/dark_bg</item>
+        <item name="colorSurfaceContainerLow">@color/dark_surface_2</item>
+        <item name="colorSurfaceContainer">@color/dark_surface</item>
+        <item name="colorSurfaceContainerHigh">@color/dark_surface_2</item>
+        <item name="colorSurfaceContainerHighest">@color/dark_border</item>
+    </style>
+</resources>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Texto. As cores vêm do tema, então os mesmos estilos funcionam no claro,
+         no escuro e na tela de alerta. -->
+    <style name="Texto">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- 18sp semibold: título de card -->
+    <style name="Texto.Titulo">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <!-- 16sp: corpo -->
+    <style name="Texto.Corpo">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- 14sp cinza: subtítulos e descrições -->
+    <style name="Texto.Secundario">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- 12sp cinza: legendas -->
+    <style name="Texto.Legenda">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- 28sp bold: número em destaque (temperatura) -->
+    <style name="Texto.Destaque">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Cabeçalho de seção das Configurações: pequeno, caixa alta, vermelho, com ícone -->
+    <style name="Texto.Secao">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textColor">@color/vermelho_texto</item>
+        <item name="drawableTint">@color/vermelho_texto</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <!-- Toolbar -->
+    <style name="TextAppearance.CaiuSOS.Toolbar" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="Widget.CaiuSOS.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="titleTextAppearance">@style/TextAppearance.CaiuSOS.Toolbar</item>
+        <item name="titleTextColor">?attr/colorOnSurface</item>
+        <item name="navigationIconTint">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- Card: raio 16dp, borda 1dp, sem sombra -->
+    <style name="Widget.CaiuSOS.Card" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardCornerRadius">@dimen/raio_card</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">?attr/colorOutlineVariant</item>
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+    </style>
+
+    <!-- Switch verde quando ligado -->
+    <style name="Widget.CaiuSOS.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@color/switch_thumb</item>
+        <item name="trackTint">@color/switch_track</item>
+        <item name="trackDecorationTint">@color/switch_track_borda</item>
+    </style>
+
+    <!-- Linha de configuração que é o próprio switch: a linha inteira é o alvo de toque
+         e o TalkBack lê título, descrição e estado num foco só -->
+    <style name="Widget.CaiuSOS.Switch.Linha">
+        <item name="android:minHeight">64dp</item>
+        <item name="android:paddingStart">@dimen/padding_card</item>
+        <item name="android:paddingEnd">@dimen/padding_card</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:lineSpacingExtra">2dp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="switchPadding">16dp</item>
+    </style>
+
+    <!-- Slider: o valor já aparece ao lado do título, então sem balão -->
+    <style name="Widget.CaiuSOS.Slider" parent="Widget.Material3.Slider">
+        <item name="labelBehavior">gone</item>
+    </style>
+
+    <!-- Aplicado em um componente para ele usar verde no lugar do vermelho (ex.: slider do check-in) -->
+    <style name="ThemeOverlay.CaiuSOS.Verde" parent="">
+        <item name="colorPrimary">@color/safe_green</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <!-- Navegação inferior: rótulos sempre visíveis, item ativo neutro -->
+    <style name="Widget.CaiuSOS.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemIconTint">@color/navegacao_item</item>
+        <item name="itemTextColor">@color/navegacao_item</item>
+        <item name="labelVisibilityMode">labeled</item>
+    </style>
+
+    <!-- Botão de texto com alvo de toque de 56dp -->
+    <style name="Widget.CaiuSOS.BotaoTexto" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">@dimen/alvo_toque</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/vermelho_texto</item>
+        <item name="iconTint">@color/vermelho_texto</item>
+    </style>
+
+    <!-- Botões grandes: 56dp, raio 24dp. Texto 18sp bold conta como "texto grande"
+         no contraste, o que deixa branco sobre o verde e o vermelho legível. -->
+    <style name="Widget.CaiuSOS.BotaoGrande" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/alvo_toque</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="cornerRadius">@dimen/raio_botao</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Widget.CaiuSOS.BotaoGrande.Verde">
+        <item name="backgroundTint">@color/safe_green</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="iconTint">@color/white</item>
+    </style>
+
+    <!-- Tonal cinza (usa colorSecondaryContainer, que no tema é cinza) -->
+    <style name="Widget.CaiuSOS.BotaoTonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:minHeight">@dimen/alvo_toque</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="cornerRadius">@dimen/raio_botao</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Contorno vermelho: ações de emergência secundárias (Ligar 192, Testar alerta) -->
+    <style name="Widget.CaiuSOS.BotaoContornoVermelho" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">@dimen/alvo_toque</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="cornerRadius">@dimen/raio_botao</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/vermelho_texto</item>
+        <item name="iconTint">@color/vermelho_texto</item>
+        <item name="strokeColor">@color/vermelho_texto</item>
+    </style>
+
+    <!-- Campo de texto: rótulo fica acima, fora do campo (mais legível que o rótulo
+         flutuante), então o hint da caixa é desligado e o exemplo vai no próprio EditText. -->
+    <style name="Widget.CaiuSOS.CampoTexto" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="hintEnabled">false</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="boxStrokeColor">@color/campo_borda</item>
+        <item name="startIconTint">?attr/colorOnSurfaceVariant</item>
+        <item name="cursorColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- Chip de filtro em pílula. Sem ícone de check: o fundo escuro já marca o selecionado
+         (e o TalkBack anuncia "selecionado"). Alvo de toque de 56dp. -->
+    <style name="Widget.CaiuSOS.ChipFiltro" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/chip_fundo</item>
+        <item name="android:textColor">@color/chip_texto</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="chipCornerRadius">24dp</item>
+        <item name="chipMinHeight">48dp</item>
+        <item name="chipMinTouchTargetSize">@dimen/alvo_toque</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="textStartPadding">8dp</item>
+        <item name="textEndPadding">8dp</item>
+    </style>
+
+    <!-- Diálogos: botões em vermelho legível (o #E53935 não tem contraste para texto) -->
+    <style name="ThemeOverlay.CaiuSOS.Dialogo" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorPrimary">@color/vermelho_texto</item>
+    </style>
+
+    <!-- Botão SOS: círculo de 200dp, "SOS" bold 48sp -->
+    <style name="Widget.CaiuSOS.BotaoSos" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/sos_red_light</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">48sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="cornerRadius">@dimen/sos_raio</item>
+    </style>
+</resources>

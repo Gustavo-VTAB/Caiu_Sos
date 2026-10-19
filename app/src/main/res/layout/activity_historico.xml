@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HistoricoActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationContentDescription="@string/voltar"
+        app:navigationIcon="@drawable/ic_voltar"
+        app:title="@string/historico_titulo" />
+
+    <!-- Filtros: rolam de lado se não couberem na tela -->
+    <HorizontalScrollView
+        android:id="@+id/rolagemFiltros"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/margem_tela"
+        android:paddingEnd="@dimen/margem_tela"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/filtros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:checkedChip="@id/chipTodos"
+            app:chipSpacingHorizontal="8dp"
+            app:selectionRequired="true"
+            app:singleLine="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTodos"
+                style="@style/Widget.CaiuSOS.ChipFiltro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/historico_filtro_todos" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipQuedas"
+                style="@style/Widget.CaiuSOS.ChipFiltro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/historico_filtro_quedas" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipPanico"
+                style="@style/Widget.CaiuSOS.ChipFiltro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/historico_filtro_panico" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipCheckins"
+                style="@style/Widget.CaiuSOS.ChipFiltro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/historico_filtro_checkins" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <!-- Barra discreta: período à esquerda, quantidade à direita -->
+    <TextView
+        android:id="@+id/textoPeriodo"
+        style="@style/Texto.Secundario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margem_tela"
+        android:layout_marginTop="4dp"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:text="@string/historico_periodo"
+        app:drawableStartCompat="@drawable/ic_calendario"
+        app:drawableTint="?attr/colorOnSurfaceVariant"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rolagemFiltros" />
+
+    <TextView
+        android:id="@+id/textoRegistros"
+        style="@style/Texto.Secundario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margem_tela"
+        app:layout_constraintBaseline_toBaselineOf="@id/textoPeriodo"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="7 registros" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lista"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/margem_tela"
+        android:paddingEnd="@dimen/margem_tela"
+        android:paddingBottom="@dimen/margem_tela"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/navegacao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textoPeriodo"
+        tools:listitem="@layout/item_evento" />
+
+    <!-- Estado vazio, centralizado na área da lista -->
+    <ImageView
+        android:id="@+id/iconeVazio"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:background="@drawable/bg_circulo"
+        android:backgroundTint="@color/neutral_container"
+        android:importantForAccessibility="no"
+        android:padding="24dp"
+        android:src="@drawable/ic_historico"
+        app:layout_constraintBottom_toTopOf="@id/textoVazio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/lista"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:tint="?attr/colorOnSurfaceVariant" />
+
+    <TextView
+        android:id="@+id/textoVazio"
+        style="@style/Texto.Titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/historico_vazio"
+        app:layout_constraintBottom_toTopOf="@id/textoVazioDescricao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iconeVazio" />
+
+    <TextView
+        android:id="@+id/textoVazioDescricao"
+        style="@style/Texto.Secundario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:text="@string/historico_vazio_descricao"
+        app:layout_constraintBottom_toBottomOf="@id/lista"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textoVazio" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/grupoVazio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="iconeVazio,textoVazio,textoVazioDescricao" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navegacao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_navegacao" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

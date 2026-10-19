@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Estados (iguais no claro e no escuro) -->
+    <color name="sos_red">#E53935</color>           <!-- primary / ações de emergência -->
+    <color name="sos_red_light">#FF5252</color>     <!-- alerta ativo, botão SOS, glow -->
+    <color name="sos_red_dark">#B71C1C</color>      <!-- topo do fundo da tela de alerta -->
+    <color name="safe_green">#43A047</color>        <!-- monitoramento ativo, "estou bem" -->
+    <color name="warning_amber">#FFA000</color>     <!-- clima, GPS fraco, sem contatos -->
+    <color name="cancel_gray">#757575</color>       <!-- eventos cancelados, estado desligado -->
+
+    <!-- Tema escuro -->
+    <color name="dark_bg">#121212</color>
+    <color name="dark_surface">#1E1E1E</color>      <!-- cards -->
+    <color name="dark_surface_2">#252525</color>    <!-- bottom sheets / modais -->
+    <color name="dark_border">#333333</color>
+    <color name="dark_text">#FFFFFF</color>
+    <color name="dark_text_2">#B0B0B0</color>
+
+    <!-- Tema claro -->
+    <color name="light_bg">#F7F7F7</color>
+    <color name="light_surface">#FFFFFF</color>
+    <color name="light_border">#E0E0E0</color>
+    <color name="light_text">#1C1B1B</color>
+    <color name="light_text_2">#6B6B6B</color>
+
+    <!-- Contêiner vermelho (avatares, FAB): opaco, por isso uma versão para cada tema -->
+    <color name="sos_red_container_light">#FFDAD6</color>
+    <color name="sos_red_container_dark">#4A1C1A</color>
+
+    <!-- Fundos translúcidos de ícones em círculo: a transparência faz a mesma cor
+         funcionar sobre o fundo claro e sobre o escuro -->
+    <color name="safe_green_container">#2943A047</color>
+    <color name="warning_amber_container">#29FFA000</color>
+    <color name="neutral_container">#33757575</color>
+    <color name="sos_red_translucido">#29E53935</color>
+
+    <!-- Anéis de glow do botão SOS -->
+    <color name="sos_glow_externo">#1AFF5252</color>
+    <color name="sos_glow_interno">#33FF5252</color>
+
+    <!-- Texto/contorno vermelho sobre superfície: escuro no claro, claro no escuro
+         (o #E53935 não tem contraste suficiente para texto em nenhum dos dois).
+         A versão do tema escuro fica em values-night/colors.xml. -->
+    <color name="vermelho_texto">@color/sos_red_dark</color>
+    <!-- Mesmo motivo para o verde: #43A047 sobre branco não tem contraste para texto -->
+    <color name="verde_texto">#2E7D32</color>
+
+    <!-- Tela de alerta (sempre vermelha) -->
+    <color name="alerta_text_2">#E6FFFFFF</color>        <!-- texto secundário -->
+    <color name="alerta_translucido">#33FFFFFF</color>   <!-- círculo do ícone do topo -->
+    <color name="alerta_trilha">#40FFFFFF</color>        <!-- trilha do anel de contagem -->
+    <!-- Verde claro: o safe_green some sobre o vermelho, este tem contraste -->
+    <color name="safe_green_claro">#B9F6CA</color>
+</resources>

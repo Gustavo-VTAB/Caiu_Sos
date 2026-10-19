@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margem_tela">16dp</dimen>
+    <dimen name="espaco_cards">12dp</dimen>
+    <dimen name="padding_card">16dp</dimen>
+    <dimen name="raio_card">16dp</dimen>
+    <dimen name="raio_botao">24dp</dimen>
+    <!-- Alvo de toque mínimo (luva / idoso) -->
+    <dimen name="alvo_toque">56dp</dimen>
+    <dimen name="icone_circulo">48dp</dimen>
+    <dimen name="icone_circulo_padding">12dp</dimen>
+
+    <!-- Botão SOS: botão 200dp, anel de progresso 224dp e glow 256dp, todos concêntricos -->
+    <dimen name="sos_tamanho">200dp</dimen>
+    <dimen name="sos_raio">100dp</dimen>
+    <dimen name="sos_progresso">224dp</dimen>
+    <dimen name="sos_glow">256dp</dimen>
+</resources>

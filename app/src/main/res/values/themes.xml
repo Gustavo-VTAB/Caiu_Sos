@@ -1,0 +1,82 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Cores do tema claro (dia). O tema escuro redefine este mesmo estilo em
+         values-night/themes.xml; o que não muda entre os dois fica em Theme.CaiuSOS. -->
+    <style name="Base.Theme.CaiuSOS" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/sos_red</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/sos_red_container_light</item>
+        <item name="colorOnPrimaryContainer">@color/sos_red_dark</item>
+
+        <item name="colorSecondary">@color/safe_green</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Contêiner secundário neutro: botões tonais cinza e indicador da navegação -->
+        <item name="colorSecondaryContainer">@color/light_border</item>
+        <item name="colorOnSecondaryContainer">@color/light_text</item>
+
+        <item name="colorTertiary">@color/warning_amber</item>
+        <item name="colorOnTertiary">@color/light_text</item>
+
+        <item name="colorError">@color/sos_red</item>
+        <item name="colorOnError">@color/white</item>
+
+        <item name="android:colorBackground">@color/light_bg</item>
+        <item name="colorOnBackground">@color/light_text</item>
+        <item name="colorSurface">@color/light_surface</item>
+        <item name="colorOnSurface">@color/light_text</item>
+        <item name="colorSurfaceVariant">@color/light_border</item>
+        <!-- Texto secundário sempre cinza neutro -->
+        <item name="colorOnSurfaceVariant">@color/light_text_2</item>
+        <item name="colorOutline">@color/cancel_gray</item>
+        <item name="colorOutlineVariant">@color/light_border</item>
+
+        <!-- Snackbar -->
+        <item name="colorSurfaceInverse">@color/light_text</item>
+        <item name="colorOnSurfaceInverse">@color/light_bg</item>
+        <item name="colorPrimaryInverse">@color/sos_red_light</item>
+
+        <item name="colorSurfaceContainerLowest">@color/light_surface</item>
+        <item name="colorSurfaceContainerLow">@color/light_surface</item>
+        <item name="colorSurfaceContainer">@color/light_surface</item>
+        <item name="colorSurfaceContainerHigh">@color/light_surface</item>
+        <item name="colorSurfaceContainerHighest">@color/light_border</item>
+    </style>
+
+    <!-- Tema do app -->
+    <style name="Theme.CaiuSOS" parent="Base.Theme.CaiuSOS">
+        <!-- Profundidade vem de tom + borda. Sem isso o Material tinge superfícies elevadas
+             (navegação, diálogos) com a cor primária e o escuro fica avermelhado. -->
+        <item name="elevationOverlayEnabled">false</item>
+        <item name="toolbarStyle">@style/Widget.CaiuSOS.Toolbar</item>
+        <item name="materialCardViewStyle">@style/Widget.CaiuSOS.Card</item>
+        <item name="materialSwitchStyle">@style/Widget.CaiuSOS.Switch</item>
+        <item name="bottomNavigationStyle">@style/Widget.CaiuSOS.BottomNavigation</item>
+        <item name="textInputStyle">@style/Widget.CaiuSOS.CampoTexto</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.CaiuSOS.Dialogo</item>
+        <item name="sliderStyle">@style/Widget.CaiuSOS.Slider</item>
+    </style>
+
+    <!-- Tela de alerta: sempre vermelha, igual de dia e de noite (não existe em values-night).
+         Herda do Material3.Dark para o texto ser branco independente do modo do sistema. -->
+    <style name="Theme.CaiuSOS.Alerta" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/sos_red_dark</item>
+        <item name="colorSecondary">@color/safe_green</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="android:windowBackground">@drawable/bg_alerta</item>
+        <item name="android:colorBackground">@color/sos_red_dark</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorSurface">@color/sos_red_dark</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorOnSurfaceVariant">@color/alerta_text_2</item>
+        <item name="colorSurfaceInverse">@color/light_text</item>
+        <item name="colorOnSurfaceInverse">@color/white</item>
+        <item name="colorPrimaryInverse">@color/sos_red_light</item>
+
+        <item name="android:statusBarColor">@color/sos_red_dark</item>
+        <item name="android:navigationBarColor">@color/sos_red</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+    </style>
+</resources>

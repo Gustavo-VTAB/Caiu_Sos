@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_main"
+        app:title="@string/app_name" />
+
+    <!-- Rolagem só para telas pequenas; em celulares comuns tudo cabe sem rolar -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/rolagem"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/navegacao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/margem_tela"
+            android:paddingEnd="@dimen/margem_tela"
+            android:paddingBottom="@dimen/margem_tela">
+
+            <!-- 1. Status do monitoramento -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardStatus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_card">
+
+                    <ImageView
+                        android:id="@+id/iconeStatus"
+                        android:layout_width="@dimen/icone_circulo"
+                        android:layout_height="@dimen/icone_circulo"
+                        android:background="@drawable/bg_circulo"
+                        android:backgroundTint="@color/safe_green_container"
+                        android:importantForAccessibility="no"
+                        android:padding="@dimen/icone_circulo_padding"
+                        android:src="@drawable/ic_escudo_ok"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/safe_green" />
+
+                    <TextView
+                        android:id="@+id/tituloStatus"
+                        style="@style/Texto.Titulo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="12dp"
+                        android:drawablePadding="8dp"
+                        android:text="@string/status_ativo"
+                        app:drawableStartCompat="@drawable/ponto_status"
+                        app:drawableTint="@color/safe_green"
+                        app:layout_constraintBottom_toTopOf="@id/subtituloStatus"
+                        app:layout_constraintEnd_toStartOf="@id/switchMonitoramento"
+                        app:layout_constraintStart_toEndOf="@id/iconeStatus"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <TextView
+                        android:id="@+id/subtituloStatus"
+                        style="@style/Texto.Secundario"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/status_ativo_descricao"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/tituloStatus"
+                        app:layout_constraintStart_toStartOf="@id/tituloStatus"
+                        app:layout_constraintTop_toBottomOf="@id/tituloStatus" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchMonitoramento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:contentDescription="@string/status_switch_descricao"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 2. Botão SOS: glow, anel de progresso (enche enquanto segura) e botão, concêntricos -->
+            <View
+                android:id="@+id/glowSos"
+                android:layout_width="@dimen/sos_glow"
+                android:layout_height="@dimen/sos_glow"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_sos_glow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardStatus" />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progressoSos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
+                android:max="1000"
+                android:visibility="invisible"
+                app:indicatorColor="@color/sos_red"
+                app:indicatorSize="@dimen/sos_progresso"
+                app:layout_constraintBottom_toBottomOf="@id/glowSos"
+                app:layout_constraintEnd_toEndOf="@id/glowSos"
+                app:layout_constraintStart_toStartOf="@id/glowSos"
+                app:layout_constraintTop_toTopOf="@id/glowSos"
+                app:trackColor="@android:color/transparent"
+                app:trackThickness="6dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/botaoSos"
+                style="@style/Widget.CaiuSOS.BotaoSos"
+                android:layout_width="@dimen/sos_tamanho"
+                android:layout_height="@dimen/sos_tamanho"
+                android:contentDescription="@string/sos_descricao"
+                android:text="@string/sos"
+                app:layout_constraintBottom_toBottomOf="@id/glowSos"
+                app:layout_constraintEnd_toEndOf="@id/glowSos"
+                app:layout_constraintStart_toStartOf="@id/glowSos"
+                app:layout_constraintTop_toTopOf="@id/glowSos" />
+
+            <TextView
+                android:id="@+id/textoSos"
+                style="@style/Texto.Corpo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="@string/sos_segure"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/glowSos" />
+
+            <TextView
+                android:id="@+id/textoSosDica"
+                style="@style/Texto.Legenda"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/sos_dica"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textoSos" />
+
+            <!-- 3. Clima (placeholder até a etapa 5) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardClima"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textoSosDica">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_card">
+
+                    <ImageView
+                        android:id="@+id/iconeClima"
+                        android:layout_width="@dimen/icone_circulo"
+                        android:layout_height="@dimen/icone_circulo"
+                        android:background="@drawable/bg_circulo"
+                        android:backgroundTint="@color/neutral_container"
+                        android:importantForAccessibility="no"
+                        android:padding="@dimen/icone_circulo_padding"
+                        android:src="@drawable/ic_nuvem"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:id="@+id/textoClimaCarregando"
+                        style="@style/Texto.Secundario"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="@string/clima_carregando"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@id/iconeClima"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/iconeClima"
+                        app:layout_constraintTop_toTopOf="@id/iconeClima" />
+
+                    <TextView
+                        android:id="@+id/textoTemperatura"
+                        style="@style/Texto.Destaque"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="@id/iconeClima"
+                        app:layout_constraintStart_toEndOf="@id/iconeClima"
+                        app:layout_constraintTop_toTopOf="@id/iconeClima"
+                        tools:text="21°C" />
+
+                    <TextView
+                        android:id="@+id/textoCidade"
+                        style="@style/Texto.Secundario"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        app:layout_constraintBaseline_toBaselineOf="@id/textoTemperatura"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/textoTemperatura"
+                        tools:text="Curitiba" />
+
+                    <ImageView
+                        android:id="@+id/iconeAviso"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="12dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_aviso"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/iconeClima"
+                        app:tint="@color/warning_amber" />
+
+                    <TextView
+                        android:id="@+id/textoAviso"
+                        style="@style/Texto.Secundario"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textColor="?attr/colorOnSurface"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/iconeAviso"
+                        app:layout_constraintTop_toTopOf="@id/iconeAviso"
+                        tools:text="Chuva prevista — atenção na estrada" />
+
+                    <!-- Dados do clima: aparecem quando a etapa 5 carregar a previsão -->
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/grupoClima"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:constraint_referenced_ids="textoTemperatura,textoCidade,iconeAviso,textoAviso" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 4. Contatos de emergência -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardContatos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaco_cards"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardClima">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_card">
+
+                    <ImageView
+                        android:id="@+id/iconeContatos"
+                        android:layout_width="@dimen/icone_circulo"
+                        android:layout_height="@dimen/icone_circulo"
+                        android:background="@drawable/bg_circulo"
+                        android:backgroundTint="@color/neutral_container"
+                        android:importantForAccessibility="no"
+                        android:padding="@dimen/icone_circulo_padding"
+                        android:src="@drawable/ic_contatos"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:id="@+id/tituloContatos"
+                        style="@style/Texto.Titulo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintBottom_toTopOf="@id/subtituloContatos"
+                        app:layout_constraintEnd_toStartOf="@id/botaoContatos"
+                        app:layout_constraintStart_toEndOf="@id/iconeContatos"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed"
+                        tools:text="3 contatos de emergência" />
+
+                    <TextView
+                        android:id="@+id/subtituloContatos"
+                        style="@style/Texto.Secundario"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/tituloContatos"
+                        app:layout_constraintStart_toStartOf="@id/tituloContatos"
+                        app:layout_constraintTop_toBottomOf="@id/tituloContatos"
+                        tools:text="@string/contatos_configurados" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/botaoContatos"
+                        style="@style/Widget.CaiuSOS.BotaoTexto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@string/contatos_ver_lista" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navegacao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_navegacao" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

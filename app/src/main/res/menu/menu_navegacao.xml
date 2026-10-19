@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Navegação inferior compartilhada por Início, Contatos e Histórico -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_inicio"
+        android:icon="@drawable/ic_escudo"
+        android:title="@string/nav_inicio" />
+
+    <item
+        android:id="@+id/nav_contatos"
+        android:icon="@drawable/ic_contatos"
+        android:title="@string/nav_contatos" />
+
+    <item
+        android:id="@+id/nav_historico"
+        android:icon="@drawable/ic_historico"
+        android:title="@string/nav_historico" />
+</menu>
